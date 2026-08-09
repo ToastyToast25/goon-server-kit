@@ -1,7 +1,7 @@
 # Goon Server Kit
 
 Host-side companion for the **Land of Goons: Economy** Project Zomboid mod
-(Steam Workshop 3780050823). The mod gives your server the in-game platform -
+([Steam Workshop 3780050823](https://steamcommunity.com/sharedfiles/filedetails/?id=3780050823)). The mod gives your server the in-game platform -
 economy, bounties, casino, contracts, territory war, radio. This kit runs ON
 YOUR HOST and adds the parts a mod can't: a live status website, scheduled
 world events with creepy announcements, automated restarts, and in-game tips.
@@ -51,6 +51,13 @@ tagline, "The Story So Far" lore, the economy tables (currency name, prices),
 the commands table, the join instructions (IP/port), and the House Rules.
 Search the file for "Goon" to catch every mention. The live-data script tags
 (status.json / events.json) work unchanged.
+
+## Links
+
+- **[Land of Goons: Economy](https://steamcommunity.com/sharedfiles/filedetails/?id=3780050823)** - the in-game platform this kit pairs with (Terminal, bounties, casino, contracts, territory war, radio)
+- **[Land of Goons: Gag Emporium](https://steamcommunity.com/sharedfiles/filedetails/?id=3780051574)** - companion mod: global jumpscare gags as a Goonmark sink
+- **[Storm Mod Framework b42](https://steamcommunity.com/sharedfiles/filedetails/?id=3670772371)** - required by both mods; needs a server-side javaagent (see the Economy page for the one-line setup)
+- **[Jumpscare Ban by Gus Puffy](https://steamcommunity.com/sharedfiles/filedetails/?id=3716129274)** - required by the Gag Emporium
 
 ## Putting this on GitHub
 
