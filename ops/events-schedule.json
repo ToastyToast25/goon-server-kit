@@ -1,0 +1,15 @@
+{
+  "_comment": "Weekly event calendar for Your Server Name. dow: Mon=0..Sun=6 (Python weekday). Drives cron AND the website 'upcoming' list. Keep in sync with crontab entries and goon-events.sh keys.",
+  "events": [
+    { "key": "merchant",   "emoji": "🛒", "title": "The Peddler",       "blurb": "A stranger with a loaded truck rolls into the hub. Rare stock, cash only, gone within the hour.", "dow": 0, "hour": 17, "minute": 0, "duration_min": 60 },
+    { "key": "fog",        "emoji": "🌫️", "title": "Knox Fog",     "blurb": "Cold fog off the river. You won't see them until they're close — and you won't hear yourself think.", "dow": 1, "hour": 21, "minute": 0, "duration_min": 120 },
+    { "key": "bloodmoon",  "emoji": "🌑", "title": "Blood Moon",        "blurb": "The moon comes up red as a wound. Every alarm in the county trips at once and the dead wake hungry.", "dow": 2, "hour": 21, "minute": 0, "duration_min": 120 },
+    { "key": "megahorde",  "emoji": "💀", "title": "The Gathering",     "blurb": "A tide of the dead, thousands strong, pulls together at one landmark. Break it and earn a place on the wall.", "dow": 3, "hour": 20, "minute": 0, "duration_min": 90 },
+    { "key": "doublexp",   "emoji": "⚡", "title": "Double Knowledge",        "blurb": "The Syndicate pays double all weekend — every swing, stitch and page is worth twice as much until Monday.", "dow": 4, "hour": 18, "minute": 0, "duration_min": 3600 },
+    { "key": "wanted",     "emoji": "🎯", "title": "Wanted",            "blurb": "A price goes up on one Goon's head. Collect at the Ledger — if you can catch them.", "dow": 4, "hour": 20, "minute": 0, "duration_min": 120 },
+    { "key": "supplydrop", "emoji": "📦", "title": "Supply Drop",       "blurb": "A bird drops a crate somewhere over the county. Everything you need and things you don't. First there keeps it.", "dow": 6, "hour": 15, "minute": 0, "duration_min": 45 },
+    { "key": "siege",      "emoji": "🎖️", "title": "Bandit Siege", "blurb": "A bandit column moves on a town, armed and coming. Defenders split the pot.", "dow": 6, "hour": 19, "minute": 0, "duration_min": 90 },
+    { "key": "saturday",   "emoji": "🚨", "title": "Siren Saturday",    "blurb": "An hour of escalating dread — gunshots pull hordes, the chopper shadows someone, thunder sells the mood.", "dow": 5, "hour": 20, "minute": 0, "duration_min": 75 },
+    { "key": "purge",      "emoji": "🔥", "title": "The Purge",         "blurb": "For one hour the old rules are off. Safehouse doors mean nothing and bounties pay double. Settle your debts.", "dow": 5, "hour": 22, "minute": 0, "duration_min": 60 }
+  ]
+}

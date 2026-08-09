@@ -1,0 +1,26 @@
+#!/bin/bash
+# Root helper: flips the ATF Economy zombie-bounty between normal and weekend
+# rates in the server SandboxVars. Approved for passwordless sudo via
+# /etc/sudoers.d/goon-ops so cron can call it. Takes effect on next restart
+# (the daily-restart flow calls this immediately before restarting).
+set -eu
+SV=/path/to/your/server/volume/.cache/Server/YOUR_SERVER_NAME_SandboxVars.lua
+case "${1:-}" in
+weekend)
+    sed -i \
+        -e 's/\(ZombieBountyChance =\)[^,]*/\1 25/' \
+        -e 's/\(ZombieBountyMinAmount =\)[^,]*/\1 10/' \
+        -e 's/\(ZombieBountyMaxAmount =\)[^,]*/\1 50/' "$SV"
+    ;;
+normal)
+    sed -i \
+        -e 's/\(ZombieBountyChance =\)[^,]*/\1 15/' \
+        -e 's/\(ZombieBountyMinAmount =\)[^,]*/\1 5/' \
+        -e 's/\(ZombieBountyMaxAmount =\)[^,]*/\1 25/' "$SV"
+    ;;
+*)
+    echo "usage: goon-bounty {weekend|normal}" >&2
+    exit 1
+    ;;
+esac
+grep -E "ZombieBounty(Chance|MinAmount|MaxAmount)" "$SV"

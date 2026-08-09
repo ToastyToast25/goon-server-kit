@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Server Name — Project Zomboid Server</title>
+<style>
+:root {
+  --ground: #14110d;
+  --panel: #1d1913;
+  --line: #352d20;
+  --ink: #eae4d4;
+  --dim: #a89e88;
+  --faint: #6d6553;
+  --gold: #daa520;
+  --gold-ink: #1c170e;
+  --fire: #d05353;
+  --salmon: #fa8072;
+  --leaf: #8fc44a;
+  --sky: #64a0d8;
+}
+* { box-sizing: border-box; margin: 0; }
+body {
+  background: var(--ground);
+  color: var(--ink);
+  font-family: Georgia, 'Times New Roman', serif;
+  line-height: 1.55;
+  padding: 0 20px 70px;
+}
+.wrap { max-width: 880px; margin: 0 auto; }
+header { padding: 56px 0 26px; border-bottom: 3px double var(--gold); }
+h1 {
+  font-family: 'Arial Black', Arial, sans-serif;
+  font-size: clamp(34px, 7vw, 58px);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.02;
+}
+h1 span { color: var(--gold); }
+.tagline { color: var(--dim); font-style: italic; margin-top: 12px; max-width: 62ch; white-space: pre-line; }
+.statusbar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 12px 26px;
+  margin-top: 22px;
+  font-family: Consolas, 'Courier New', monospace; font-size: 14px;
+}
+.dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--faint); margin-right: 7px; }
+.dot.on { background: var(--leaf); box-shadow: 0 0 8px var(--leaf); }
+.dot.off { background: var(--fire); }
+.joinaddr { background: var(--panel); border: 1px solid var(--line); padding: 4px 10px; color: var(--gold); user-select: all; }
+h2 {
+  font-family: 'Arial Black', Arial, sans-serif;
+  font-size: 19px; letter-spacing: 0.06em; text-transform: uppercase;
+  margin: 46px 0 10px; color: var(--gold);
+}
+h3 { font-family: Arial, sans-serif; font-size: 14px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--salmon); margin: 22px 0 6px; }
+p { max-width: 70ch; margin: 9px 0; }
+.lore p { color: var(--ink); }
+.lore p + p { text-indent: 1.5em; }
+ul { max-width: 72ch; padding-left: 22px; }
+li { margin: 6px 0; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin: 16px 0; }
+.feature { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--gold); padding: 13px 15px; }
+.feature b { font-family: Arial, sans-serif; font-size: 14.5px; }
+.feature p { color: var(--dim); font-size: 14px; margin: 5px 0 0; }
+#chart { width: 100%; height: 120px; background: var(--panel); border: 1px solid var(--line); display: block; margin: 10px 0 4px; }
+.chartnote { color: var(--faint); font-size: 12.5px; font-family: Consolas, monospace; }
+.tablewrap { overflow-x: auto; margin: 12px 0; }
+table { border-collapse: collapse; width: 100%; font-family: Consolas, 'Courier New', monospace; font-size: 13.5px; }
+th { text-align: left; font-family: Arial, sans-serif; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); border-bottom: 2px solid var(--gold); padding: 6px 14px 6px 0; }
+td { border-bottom: 1px solid var(--line); padding: 6px 14px 6px 0; vertical-align: top; }
+td.cmd { color: var(--gold); white-space: nowrap; }
+td.desc-cell { font-family: Georgia, serif; font-size: 14px; }
+tr:last-child td { border-bottom: none; }
+ol.steps { max-width: 70ch; padding-left: 24px; }
+ol.steps li { margin: 10px 0; }
+.warn { border: 1px solid var(--line); border-left: 4px solid var(--fire); background: var(--panel); padding: 12px 16px; margin: 16px 0; max-width: 76ch; }
+.warn b { color: var(--fire); font-family: Arial, sans-serif; letter-spacing: 0.06em; font-size: 12.5px; text-transform: uppercase; display: block; margin-bottom: 4px; }
+code { font-family: Consolas, 'Courier New', monospace; font-size: 0.92em; color: var(--gold); }
+details { background: var(--panel); border: 1px solid var(--line); margin: 12px 0; max-width: 76ch; }
+summary { cursor: pointer; padding: 10px 14px; font-family: Arial, sans-serif; font-size: 14px; color: var(--gold); }
+summary:focus-visible { outline: 2px solid var(--gold); }
+#modlist { columns: 2; column-gap: 26px; padding: 4px 18px 14px 34px; font-size: 13.5px; color: var(--dim); }
+#modlist li { break-inside: avoid; margin: 3px 0; }
+@media (max-width: 640px) { #modlist { columns: 1; } }
+.soon { color: var(--faint); font-size: 12px; font-family: Arial, sans-serif; letter-spacing: 0.06em; }
+footer { margin-top: 60px; border-top: 3px double var(--gold); padding-top: 14px; color: var(--faint); font-size: 13px; font-style: italic; }
+a { color: var(--gold); }
+/* --- live events --- */
+.evlabel { font-family: Arial, sans-serif; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); margin: 16px 0 6px; }
+.evrow { display: flex; align-items: flex-start; gap: 12px; background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--gold); padding: 11px 14px; margin: 8px 0; }
+.evrow.live { border-left-color: var(--fire); }
+.evemoji { font-size: 22px; line-height: 1.2; flex: none; }
+.evbody { flex: 1; min-width: 0; }
+.evtitle { font-family: Arial, sans-serif; font-weight: bold; font-size: 15px; }
+.evblurb { color: var(--dim); font-size: 13.5px; margin-top: 2px; }
+.evtime { font-family: Consolas, 'Courier New', monospace; font-size: 12.5px; color: var(--gold); white-space: nowrap; text-align: right; flex: none; }
+.evrow.live .evtime { color: var(--salmon); }
+.live-badge { display: inline-block; font-family: Arial, sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold-ink); background: var(--fire); padding: 2px 7px; border-radius: 2px; margin-left: 8px; vertical-align: middle; }
+@media (max-width: 560px) { .evrow { flex-wrap: wrap; } .evtime { text-align: left; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Your <span>Server</span></h1>
+  <p class="tagline" id="desc">Six months after the Knox Event the military pulled out and the radios went quiet. Kentucky belonged to the dead — until the Goons came.</p>
+  <div class="statusbar">
+    <span><span class="dot" id="dot"></span><span id="status">checking status…</span></span>
+    <span id="slots"></span>
+    <span>DIRECT CONNECT: <span class="joinaddr">YOUR.SERVER.IP:16261</span></span>
+    <span id="modcount">BUILD 42 · PVP</span>
+    <span><a href="map/">COUNTY MAP →</a></span>
+  </div>
+</header>
+
+<div id="eventswrap" style="display:none">
+<h2>Events</h2>
+<div id="events-active"></div>
+<div id="events-upcoming"></div>
+</div>
+
+<h2>The Story So Far</h2>
+<div class="lore">
+  <p>The Exclusion Zone held for eleven days. On the twelfth, the Army fell back across the river and blew the bridges behind them, and every radio in Knox County hissed into static at the same minute — like the world outside had simply hung up.</p>
+  <p>The ones who lived called themselves survivors. The ones who <em>organized</em> called themselves Goons. Nobody remembers who said it first — some say it was scratched into the water tower in Muldraugh under a tally of kills — but it stuck, because it was honest. No uniforms, no chain of command, no pretending the old world was coming back. Just a syndicate of the stubborn: scavengers, mechanics, ex-cons and line cooks, running convoys by day and holding jukebox bars by night, paying each other in scrip stamped G$ because somebody with a sense of humor looted a mint's worth of blank checkbooks.</p>
+  <p>Then the obelisks started humming. Old stone, wrong angles, standing in fields nobody plowed. Stand close after you die — a new body, same debts — and the stone <em>remembers you</em>: your hands relearn the rifle, the wrench, the stitch. It costs. Everything in the county costs. But the Goons have an economy now, and an economy means the dead are just another market condition.</p>
+  <p>Bandit crews strip the highways. Sirens howl on Saturdays. Helicopters that answer to no one sweep the treeline. And in the middle of it all, the syndicate wires every member a stipend, prices every head that needs pricing, and keeps the lights on at the one bar in Kentucky where the end of the world takes requests.</p>
+</div>
+
+<h2>Population — last 7 days</h2>
+<canvas id="chart" width="820" height="120"></canvas>
+<div class="chartnote" id="chartnote">loading…</div>
+
+<div id="lbwrap" style="display:none">
+<h2>Leaderboard</h2>
+<div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+  <div class="feature"><b>Top Slayers — best life</b>
+    <div class="tablewrap"><table id="lb-slayers"><tr><th>Goon</th><th>Kills</th></tr></table></div>
+  </div>
+  <div class="feature"><b>Iron Survivors — hours in one life</b>
+    <div class="tablewrap"><table id="lb-iron"><tr><th>Goon</th><th>Hours</th></tr></table></div>
+  </div>
+</div>
+</div>
+
+<div id="tickwrap" style="display:none">
+<h2>County Dispatches</h2>
+<div class="tablewrap"><table id="ticker"><tr><th>When</th><th>What</th></tr></table></div>
+</div>
+
+<h2>Not Vanilla</h2>
+<div class="grid">
+  <div class="feature"><b>You are not alone</b><p>Armed NPC bandit crews roam and raid. Recruit NPC companions to fight beside you. Sirens mean trouble.</p></div>
+  <div class="feature"><b>The Goonmark economy</b><p>Bounties, stipends, player shops, a dealership, buyback crates — and a lottery, if you're feeling lucky.</p></div>
+  <div class="feature"><b>Death hurts less</b><p>2x XP, and Skill Obelisks sell your skills back at 75% after you die.</p></div>
+  <div class="feature"><b>Claim what's yours</b><p>Safehouses after 3 days survived, fortified outposts, vehicle claims — a claimed car can't be stolen.</p></div>
+  <div class="feature"><b>100+ vehicles, real physics</b><p>The full KI5 fleet with overhauled dynamics, deep repair and salvage.</p></div>
+  <div class="feature"><b>A living world</b><p>Loot respawns in unvisited wilds, bounty weekends, Siren Saturdays, jukebox bars the horde can hear.</p></div>
+  <div class="feature"><b>The Goon Terminal</b><p>One in-game window for everything — press <code>G</code> (rebindable) or type <code>/goon</code>: jobs, casino, war room, cred, dispatches.</p></div>
+  <div class="feature"><b>Daily contracts</b><p>Fresh work on the board every midnight — kill jobs, bandit culls, recon runs. One priority contract at triple pay.</p></div>
+  <div class="feature"><b>The Goon Casino</b><p>High-low dice, blackjack, and slots with a progressive jackpot fed by every loss. Server-rolled — the house is honest, just hungry.</p></div>
+  <div class="feature"><b>Territory war</b><p>Factions capture zones in the nightly contest window (7–11 PM). Held ground pays daily income and paints the map in your colors.</p></div>
+  <div class="feature"><b>Goon Cred</b><p>Achievements with titles worth wearing — from First Hundred to The Reaper's Ledger. Rare unlocks get announced county-wide.</p></div>
+  <div class="feature"><b>Radio Free Knox</b><p>Every night at 9 the county reads its own news: who died, whose head got priced, who broke the casino.</p></div>
+</div>
+
+<h2>The Economy</h2>
+<p>The syndicate currency is the <b>Goonmark (G$)</b>. Check your balance in the <b>Goon Ledger</b> (pinned by your hotbar). Everything is server-side and audited — no dupes, no take-backs.</p>
+<h3>Earning</h3>
+<div class="tablewrap"><table>
+  <tr><th>Source</th><th>Pays</th></tr>
+  <tr><td class="desc-cell">Zombie kills</td><td>15% chance of G$5–25 per kill — <b>doubled every Bounty Weekend (Fri–Mon)</b></td></tr>
+  <tr><td class="desc-cell">Bandit kills</td><td><b>2x the zombie rate</b> (G$10–50) — they shoot back, so they pay better</td></tr>
+  <tr><td class="desc-cell">Syndicate stipend</td><td>G$300 every 24 in-game hours, automatic</td></tr>
+  <tr><td class="desc-cell">Selling loot</td><td>Buyback crates at the hub pay for cigarettes, meds, parts, jewelry and more</td></tr>
+  <tr><td class="desc-cell">Player trade</td><td>Right-click a nearby Goon to transfer money; run your own Goon Stand shop</td></tr>
+  <tr><td class="desc-cell">Bounties &amp; lottery</td><td>Claim a priced head, or win the weekly pot</td></tr>
+  <tr><td class="desc-cell">Contracts</td><td>Daily jobs off the board — the priority contract pays triple</td></tr>
+  <tr><td class="desc-cell">Territory income</td><td>Your faction's held zones pay every member daily</td></tr>
+</table></div>
+<h3>Spending</h3>
+<div class="tablewrap"><table>
+  <tr><th>Sink</th><th>What</th></tr>
+  <tr><td class="desc-cell">Goon Mart</td><td>Ammo, meds, seeds, tools, generators — convenience, not power</td></tr>
+  <tr><td class="desc-cell">Goon Motors</td><td>The fleet, tiered from G$2,500 beaters to six-figure legends</td></tr>
+  <tr><td class="desc-cell">Shop Claim License</td><td>G$5,000 to own a stand and sell to the county</td></tr>
+  <tr><td class="desc-cell">Gag Emporium</td><td>G$10k–50k to blast a Fart, Cry or KACHOW to every player alive</td></tr>
+  <tr><td class="desc-cell">The Casino</td><td>Dice, blackjack, slots — the jackpot grows on every loss</td></tr>
+  <tr><td class="desc-cell">Dying</td><td>Costs 5% of your Goonmarks. The obelisk takes its cut too.</td></tr>
+</table></div>
+
+<h2>Commands</h2>
+<div class="tablewrap"><table>
+  <tr><th>Command</th><th>Does</th></tr>
+  <tr><td class="cmd">/goon</td><td class="desc-cell">Open the Goon Terminal (or press <code>G</code> — rebindable in key options) — jobs, casino, war room, cred, dispatches.</td></tr>
+  <tr><td class="cmd">/bounty &lt;player&gt; &lt;amount&gt;</td><td class="desc-cell">Price someone's head (min G$500, syndicate keeps 10%). Anyone can raise an existing bounty. A rival goon's kill collects the full head — but if zombies, bandits, or their own stupidity get them first, the whole bounty rolls into the lottery pot. Contracts untouched for a week go cold and feed the pot too. Every day at noon, Goon Radio 94.6 reads the <b>Top 10 Most Wanted</b> — get on the board or stay off it.</td></tr>
+  <tr><td class="cmd">/factionbounty &lt;faction&gt; &lt;amt&gt;</td><td class="desc-cell">Open a <b>war contract</b> on a whole faction — every kill of their members collects 25% of the remaining pot until it's spent. Active wars never go cold.</td></tr>
+  <tr><td class="cmd">/bounties</td><td class="desc-cell">List open head bounties and war contracts.</td></tr>
+  <tr><td class="cmd">/lottery &lt;count&gt;</td><td class="desc-cell">Buy weekly lottery tickets, G$500 each. Bare /lottery shows the pot. Weekly draw.</td></tr>
+  <tr><td class="cmd">/all /say /yell</td><td class="desc-cell">Chat streams: server-wide, local, and shouting (zombies hear shouts).</td></tr>
+  <tr><td class="cmd">/whisper &lt;player&gt;</td><td class="desc-cell">Private message.</td></tr>
+  <tr><td class="cmd">/safehouse /faction</td><td class="desc-cell">Talk to your housemates or your faction.</td></tr>
+</table></div>
+<p>Vehicle claiming, safehouse claiming, and shop management live in right-click context menus, not chat.</p>
+
+<h2>The Mod List</h2>
+<p id="modsintro">Loading…</p>
+<details>
+  <summary>Show every mod on the server</summary>
+  <ul id="modlist"></ul>
+</details>
+
+<h2>How to Join</h2>
+<ol class="steps">
+  <li>Project Zomboid <b>Build 42</b> (default Steam branch, currently 42.20.x).</li>
+  <li>In-game: <b>Join → Internet</b> tab → search <code>Your Server Name</code> (or add favorite <code>YOUR.SERVER.IP</code> port <code>16261</code>).</li>
+  <li>First join auto-downloads the workshop mods (a few GB — let it finish).</li>
+  <li>Pick a username you'll keep: it's bound to your Steam account on first login.</li>
+</ol>
+
+<div class="warn">
+  <b>Required one-time install — vehicles desync without it</b>
+  <p>Better Vehicle Dynamics patches game files Steam can't touch. After subscribing (automatic when you join), copy the <code>zombie</code> folder from<br>
+  <code>Steam\steamapps\workshop\content\108600\3728775267\mods\BetterVehicleDynamics\B42.20_Manual_Install\</code><br>
+  into your Project Zomboid install folder (Steam → right-click PZ → Manage → Browse local files), then restart the game. Re-copy after PZ updates.</p>
+</div>
+
+<h2>House Rules</h2>
+<ul>
+  <li>PVP is on and legal everywhere. Griefing the game itself is not: no exploits, no duping, no cheating — anti-cheat logs everything.</li>
+  <li>Offline bases are protected: no trespass, no fires, no looting, and nothing can demolish player builds.</li>
+  <li>The hub is neutral by custom, not by code. Start trouble there and expect the whole server at your door.</li>
+</ul>
+
+<footer>Your Server Name · a Project Zomboid Build 42 server · your-server-site.example.com · keep your friends close and your gas can closer.</footer>
+</div>
+
+<script>
+(function () {
+  fetch('status.json', {cache: 'no-store'}).then(function (r) { return r.json(); }).then(function (s) {
+    var dot = document.getElementById('dot');
+    var st = document.getElementById('status');
+    if (s.online) {
+      dot.className = 'dot on';
+      st.textContent = 'ONLINE — ' + s.players + ' goon' + (s.players === 1 ? '' : 's') + ' surviving';
+    } else {
+      dot.className = 'dot off';
+      st.textContent = 'RESTARTING — back in a few minutes';
+    }
+    document.getElementById('slots').textContent = 'SLOTS: ' + s.players + ' / ' + (s.maxSlots || 70);
+    if (s.modCount) {
+      document.getElementById('modcount').textContent = 'BUILD 42 · PVP · ' + s.modCount + ' MODS';
+    }
+    if (s.description) {
+      document.getElementById('desc').textContent = s.description;
+    }
+    var mods = s.mods || [];
+    document.getElementById('modsintro').textContent = mods.length
+      ? (s.modCount + ' mods active, built from ' + mods.length + ' workshop items — every one auto-downloads when you join.')
+      : 'Mod list loading…';
+    var ul = document.getElementById('modlist');
+    mods.forEach(function (m) {
+      var li = document.createElement('li');
+      li.textContent = m;
+      ul.appendChild(li);
+    });
+    function fillTable(id, rows, cols) {
+      var t = document.getElementById(id);
+      rows.forEach(function (r) {
+        var tr = document.createElement('tr');
+        cols.forEach(function (c, i) {
+          var td = document.createElement('td');
+          td.textContent = r[c];
+          if (i === 0 && id !== 'ticker') td.className = 'cmd';
+          if (id === 'ticker' && i === 0) td.className = 'cmd';
+          tr.appendChild(td);
+        });
+        t.appendChild(tr);
+      });
+    }
+    if (s.leaderboard && ((s.leaderboard.slayers || []).length || (s.leaderboard.iron || []).length)) {
+      document.getElementById('lbwrap').style.display = '';
+      fillTable('lb-slayers', s.leaderboard.slayers || [], ['name', 'kills']);
+      fillTable('lb-iron', s.leaderboard.iron || [], ['name', 'hours']);
+    }
+    if ((s.events || []).length) {
+      document.getElementById('tickwrap').style.display = '';
+      fillTable('ticker', s.events.slice().reverse(), ['t', 'text']);
+    }
+    var c = document.getElementById('chart');
+    var ctx = c.getContext('2d');
+    var series = s.series || [];
+    var note = document.getElementById('chartnote');
+    if (!series.length) { note.textContent = 'no samples yet'; return; }
+    var max = 1;
+    series.forEach(function (p) { if (p[1] > max) max = p[1]; });
+    var w = c.width, h = c.height, pad = 6;
+    ctx.clearRect(0, 0, w, h);
+    ctx.beginPath();
+    series.forEach(function (p, i) {
+      var x = pad + (w - 2 * pad) * i / (series.length - 1 || 1);
+      var y = h - pad - (h - 2 * pad) * Math.max(p[1], 0) / max;
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    });
+    ctx.strokeStyle = '#daa520';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.lineTo(w - pad, h - pad); ctx.lineTo(pad, h - pad); ctx.closePath();
+    ctx.fillStyle = 'rgba(218,165,32,0.12)';
+    ctx.fill();
+    note.textContent = 'peak ' + max + ' concurrent · sampled every 10 minutes · updated ' + new Date(s.ts * 1000).toLocaleString();
+  }).catch(function () {
+    document.getElementById('status').textContent = 'status unavailable';
+  });
+})();
+</script>
+<script>
+(function () {
+  var wrap = document.getElementById('eventswrap');
+  var actEl = document.getElementById('events-active');
+  var upEl = document.getElementById('events-upcoming');
+  var data = null;
+
+  function fmt(secs) {
+    secs = Math.max(0, Math.round(secs));
+    var d = Math.floor(secs / 86400), h = Math.floor((secs % 86400) / 3600), m = Math.floor((secs % 3600) / 60);
+    if (d) return d + 'd ' + h + 'h';
+    if (h) return h + 'h ' + m + 'm';
+    if (m) return m + 'm';
+    return 'moments';
+  }
+  function dayTime(ts) {
+    var dt = new Date(ts * 1000);
+    return dt.toLocaleDateString([], { weekday: 'short' }) + ' ' +
+           dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+  function row(e, live, timeText) {
+    var r = document.createElement('div');
+    r.className = 'evrow' + (live ? ' live' : '');
+    var em = document.createElement('span'); em.className = 'evemoji'; em.textContent = e.emoji;
+    var body = document.createElement('div'); body.className = 'evbody';
+    var title = document.createElement('div'); title.className = 'evtitle'; title.textContent = e.title;
+    if (live) { var b = document.createElement('span'); b.className = 'live-badge'; b.textContent = 'Live'; title.appendChild(b); }
+    var blurb = document.createElement('div'); blurb.className = 'evblurb'; blurb.textContent = e.blurb;
+    body.appendChild(title); body.appendChild(blurb);
+    var time = document.createElement('div'); time.className = 'evtime'; time.innerHTML = timeText;
+    r.appendChild(em); r.appendChild(body); r.appendChild(time);
+    return r;
+  }
+  function render() {
+    if (!data) return;
+    var now = Date.now() / 1000;
+    var active = (data.active || []).filter(function (e) { return e.end > now; });
+    var up = (data.upcoming || []);
+    actEl.innerHTML = ''; upEl.innerHTML = '';
+    if (active.length) {
+      var l1 = document.createElement('div'); l1.className = 'evlabel'; l1.textContent = 'Happening now'; actEl.appendChild(l1);
+      active.forEach(function (e) { actEl.appendChild(row(e, true, 'ends in ' + fmt(e.end - now))); });
+    }
+    if (up.length) {
+      var l2 = document.createElement('div'); l2.className = 'evlabel'; l2.textContent = 'Upcoming'; upEl.appendChild(l2);
+      up.forEach(function (e) { upEl.appendChild(row(e, false, dayTime(e.start) + '<br>in ' + fmt(e.start - now))); });
+    }
+    if (active.length || up.length) wrap.style.display = '';
+  }
+  fetch('events.json', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (j) {
+    data = j; render();
+  }).catch(function () {});
+  setInterval(render, 1000);
+})();
+</script>
+</body>
+</html>

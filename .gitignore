@@ -1,0 +1,8 @@
+# local state the scripts write
+*.log
+*.jsonl
+*.sqlite
+modwatch-snapshot.json
+.tip_index
+# your filled-in secrets live in a local override, never in git
+ops/secrets.conf
