@@ -10,6 +10,14 @@ Everything is a template: search for `YOUR_` placeholders and fill in your
 own values. Nothing here contains our server's secrets - or yours, until you
 add them. **Never commit your filled-in secrets to a public repo** (see below).
 
+## See it in action
+
+Everything in this kit (and the companion mods) runs live on **Land of Goons**,
+our Project Zomboid Build 42 multiplayer server: search "Land of Goons" in the
+in-game server browser, or direct connect `70.177.88.103:16261`. The website
+this kit templates is live at **[goons.hyperabyss.com](https://goons.hyperabyss.com)** -
+live status, events calendar, county map, and the full player guide.
+
 ## What's inside
 
 | Path | What it does |
