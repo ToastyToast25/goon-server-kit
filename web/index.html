@@ -140,6 +140,15 @@ a { color: var(--gold); }
   <div class="feature"><b>Iron Survivors — hours in one life</b>
     <div class="tablewrap"><table id="lb-iron"><tr><th>Goon</th><th>Hours</th></tr></table></div>
   </div>
+  <div class="feature"><b>Deep Pockets — net worth</b>
+    <div class="tablewrap"><table id="lb-rich"><tr><th>Goon</th><th>Worth</th></tr></table></div>
+  </div>
+  <div class="feature"><b>Most Wanted — live head prices</b>
+    <div class="tablewrap"><table id="lb-wanted"><tr><th>Goon</th><th>Bounty</th></tr></table></div>
+  </div>
+  <div class="feature"><b>Headhunters — bounty money collected</b>
+    <div class="tablewrap"><table id="lb-hunters"><tr><th>Goon</th><th>Collected</th></tr></table></div>
+  </div>
 </div>
 </div>
 
@@ -278,10 +287,15 @@ a { color: var(--gold); }
         t.appendChild(tr);
       });
     }
-    if (s.leaderboard && ((s.leaderboard.slayers || []).length || (s.leaderboard.iron || []).length)) {
+    if (s.leaderboard && ((s.leaderboard.slayers || []).length || (s.leaderboard.iron || []).length
+        || (s.leaderboard.rich || []).length || (s.leaderboard.wanted || []).length
+        || (s.leaderboard.hunters || []).length)) {
       document.getElementById('lbwrap').style.display = '';
       fillTable('lb-slayers', s.leaderboard.slayers || [], ['name', 'kills']);
       fillTable('lb-iron', s.leaderboard.iron || [], ['name', 'hours']);
+      fillTable('lb-rich', s.leaderboard.rich || [], ['name', 'worth']);
+      fillTable('lb-wanted', s.leaderboard.wanted || [], ['name', 'bounty']);
+      fillTable('lb-hunters', s.leaderboard.hunters || [], ['name', 'collected']);
     }
     if ((s.events || []).length) {
       document.getElementById('tickwrap').style.display = '';

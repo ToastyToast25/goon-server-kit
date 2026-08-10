@@ -80,9 +80,16 @@ def leaderboard():
         players = stats.get("players", [])
         slayers = sorted(players, key=lambda p: -p.get("kills", 0))[:10]
         iron = sorted(players, key=lambda p: -p.get("hours", 0))[:10]
+        rich = sorted(players, key=lambda p: -p.get("worth", 0))[:10]
+        wanted = sorted(players, key=lambda p: -p.get("bounty", 0))[:10]
+        hunters = sorted(players, key=lambda p: -p.get("collected", 0))[:10]
+        money = lambda n: "G$" + format(int(n), ",")
         return {
             "slayers": [{"name": p["name"], "kills": p.get("kills", 0)} for p in slayers if p.get("kills")],
             "iron": [{"name": p["name"], "hours": round(p.get("hours", 0), 1)} for p in iron if p.get("hours")],
+            "rich": [{"name": p["name"], "worth": money(p["worth"])} for p in rich if p.get("worth")],
+            "wanted": [{"name": p["name"], "bounty": money(p["bounty"])} for p in wanted if p.get("bounty")],
+            "hunters": [{"name": p["name"], "collected": money(p["collected"])} for p in hunters if p.get("collected")],
         }
     except Exception:
         return None

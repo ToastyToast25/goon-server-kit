@@ -27,7 +27,7 @@ live status, events calendar, county map, and the full player guide.
 | `ops/goon-events.sh` | The live-events engine: Blood Moon, Knox Fog, The Gathering, Bandit Siege, Wanted, Supply Drop, The Peddler, The Purge, Double XP weekend. Each event = escalating announcements + real RCON atmosphere (sirens, gunshots, chopper, weather). |
 | `ops/events-schedule.json` | The weekly calendar. Drives the website's "upcoming events" AND documents your cron times - keep both in sync. |
 | `ops/eventsgen.py` | Computes active + upcoming events into `web/events.json` for the site. |
-| `ops/statusgen.py` | Builds `web/status.json`: online players, slots, mod list with real Steam names, population history. Point `INI` at your server's ini. |
+| `ops/statusgen.py` | Builds `web/status.json`: online players, slots, mod list with real Steam names, population history, and a five-board leaderboard (kills, hours survived, net worth, head prices, bounties collected). The money boards read the Land of Goons: Economy mod's `goonstats.json`; without it the two classic boards still work. Point `INI` at your server's ini. |
 | `ops/modwatch.py` | Caches Steam Workshop titles for the mod list (daily). |
 | `web/index.html` | Complete single-file website: live status, events board, lore, economy guide, commands, mod list, join instructions. Serve it with any static web server (nginx, caddy, GitHub Pages won't work for the live JSON unless you also host the generators' output). |
 | `ops/sampler.py` | Samples player count every 10 min into sqlite - feeds the website's population chart. |
