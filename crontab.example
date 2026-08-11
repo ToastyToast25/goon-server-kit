@@ -26,3 +26,5 @@
 0 15 * * 0 /opt/goon-kit/ops/goon-events.sh supplydrop >/dev/null 2>&1
 0 19 * * 0 /opt/goon-kit/ops/goon-events.sh siege >/dev/null 2>&1
 0 6 * * 1 /opt/goon-kit/ops/goon-events.sh doublexp-end >/dev/null 2>&1
+# Discord bridge: posts county events (wars, bounties, jackpots) to your webhook
+@reboot cd /opt/goon-kit/ops && nohup python3 goon-discord-bridge.py >>/var/log/goon-discord-bridge.log 2>&1 &
